@@ -9,7 +9,7 @@ gem 'puma'
 gem 'rails', '4.2.0'
 gem 'rails_stdout_logging', group: [:development, :production]
 gem 'responders', '~> 2.0'
-
+gem 'kaminari'
 group :development, :test do
   gem 'spring'
   gem 'byebug'
