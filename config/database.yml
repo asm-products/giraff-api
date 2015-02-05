@@ -1,0 +1,15 @@
+development:
+  adapter: postgresql
+  host: localhost
+  database: giraff_development
+  pool: 16
+  timeout: 5000
+  username:
+
+test:
+  adapter: postgresql
+  host: localhost
+  database: giraff_test
+  pool: 16
+  timeout: 5000
+  username:
