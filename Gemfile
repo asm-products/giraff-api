@@ -11,6 +11,8 @@ gem 'rails_stdout_logging', group: [:development, :production]
 gem 'responders', '~> 2.0'
 gem 'kaminari'
 gem 'sidekiq'
+gem 'devise'
+gem 'simple_token_authentication'
 
 group :development, :test do
   gem 'spring'
