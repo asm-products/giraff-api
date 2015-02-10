@@ -1,13 +1,14 @@
-# == Schema Information
-#
-# Table name: images
-#
-#  id              :uuid             not null, primary key
-#  created_at      :datetime         not null
-#  name            :string           not null
-#  original_source :string           not null
-#  state           :string           default("new")
-#
-
 class Image < ActiveRecord::Base
+  has_many :faves
+  has_many :passes
+
+  scope :unpassed_by, ->(user) {
+    joins("left join passes p on p.image_id=images.id and p.user_id=#{User.sanitize(user.id)}").
+    where('p.id is null')
+  }
+  scope :unfavorited_by, ->(user) {
+    joins("left join favorites f on f.image_id=images.id and f.user_id=#{User.sanitize(user.id)}").
+    where('f.id is null')
+  }
+  scope :unseen_by, ->(user) { unpassed_by(user).unfavorited_by(user) }
 end

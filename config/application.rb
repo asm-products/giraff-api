@@ -22,5 +22,8 @@ module GiraffApi
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    # don't use rails default exception handlers, because they don't render json
+    config.exceptions_app = self.routes
   end
 end
