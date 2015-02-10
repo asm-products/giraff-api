@@ -14,6 +14,9 @@ gem 'kaminari'
 gem 'sidekiq'
 
 group :development, :test do
-  gem 'spring'
   gem 'byebug'
+  gem 'factory_girl_rails'
+  gem 'rspec-rails', '~> 3.2'
+  gem 'spring'
+  gem 'timecop'
 end

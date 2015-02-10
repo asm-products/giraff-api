@@ -1,5 +1,5 @@
 class Image < ActiveRecord::Base
-  has_many :faves
+  has_many :favorites
   has_many :passes
 
   scope :unpassed_by, ->(user) {
@@ -11,4 +11,13 @@ class Image < ActiveRecord::Base
     where('f.id is null')
   }
   scope :unseen_by, ->(user) { unpassed_by(user).unfavorited_by(user) }
+
+  def self.faved_by(user)
+    # Yep, this is a pretty gnarly query. Perhaps we should cache the current
+    # fave/pass in another table. eg: judgements
+    joins(:favorites).
+      joins("left join passes p on p.image_id=images.id and p.user_id=#{User.sanitize(user.id)}").
+      where(favorites: { user_id: user.id }).
+      where('p is null or p.created_at < favorites.created_at')
+  end
 end
