@@ -2,7 +2,7 @@ class CreateSimpleUsers < ActiveRecord::Migration
   def up
     drop_table :users
 
-    create_table(:users) do |t|
+    create_table :users, id: :uuid do |t|
       t.string :authentication_token, null: false
       t.string :email
 
