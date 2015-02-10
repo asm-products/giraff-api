@@ -11,15 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150210002208) do
+ActiveRecord::Schema.define(version: 20150210004241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
   create_table "favorites", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.uuid "image_id", null: false
-    t.uuid "user_id",  null: false
+    t.datetime "created_at", null: false
+    t.uuid     "image_id",   null: false
+    t.uuid     "user_id",    null: false
   end
 
   add_index "favorites", ["image_id", "user_id"], name: "index_favorites_on_image_id_and_user_id", unique: true, using: :btree
@@ -30,6 +31,14 @@ ActiveRecord::Schema.define(version: 20150210002208) do
     t.string   "original_source",                 null: false
     t.string   "state",           default: "new"
   end
+
+  create_table "passes", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid     "image_id",   null: false
+    t.uuid     "user_id",    null: false
+  end
+
+  add_index "passes", ["image_id", "user_id"], name: "index_passes_on_image_id_and_user_id", unique: true, using: :btree
 
   create_table "users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "authentication_token",             null: false
@@ -48,4 +57,6 @@ ActiveRecord::Schema.define(version: 20150210002208) do
 
   add_foreign_key "favorites", "images"
   add_foreign_key "favorites", "users"
+  add_foreign_key "passes", "images"
+  add_foreign_key "passes", "users"
 end

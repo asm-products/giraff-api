@@ -1,6 +1,6 @@
-class CreateFavorites < ActiveRecord::Migration
+class CreatePasses < ActiveRecord::Migration
   def change
-    create_table :favorites, id: :uuid do |t|
+    create_table :passes, id: :uuid do |t|
       t.datetime :created_at, null: false
       t.uuid :image_id, null: false
       t.uuid :user_id,  null: false
@@ -8,7 +8,7 @@ class CreateFavorites < ActiveRecord::Migration
       t.index [:image_id, :user_id], unique: true
     end
 
-    add_foreign_key :favorites, :images
-    add_foreign_key :favorites, :users
+    add_foreign_key :passes, :images
+    add_foreign_key :passes, :users
   end
 end
