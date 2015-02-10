@@ -12,8 +12,6 @@ class ApplicationController < ActionController::Base
     user_token = request.headers['X-User-Token'].presence
     user = user_token && User.find_or_create_by(authentication_token: user_token)
 
-    puts "user: #{user.inspect}"
-
     if user
       sign_in user, store: false
     end
