@@ -12,6 +12,7 @@ gem 'rails_stdout_logging', group: [:development, :production]
 gem 'responders', '~> 2.0'
 gem 'kaminari'
 gem 'sidekiq'
+gem 'faraday', '~> 0.9.1'
 
 group :development, :test do
   gem 'byebug'

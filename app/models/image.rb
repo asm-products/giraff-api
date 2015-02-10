@@ -2,6 +2,8 @@ class Image < ActiveRecord::Base
   has_many :favorites
   has_many :passes
 
+  validates :original_source, uniqueness: true
+
   scope :unpassed_by, ->(user) {
     joins("left join passes p on p.image_id=images.id and p.user_id=#{User.sanitize(user.id)}").
     where('p.id is null')
