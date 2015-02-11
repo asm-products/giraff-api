@@ -1,9 +1,10 @@
 namespace :fetch do
   desc "Pulls gifs from reddit and saves them to the database"
-  task reddit_gifs: :environment do
-
+  task :reddit_gifs, [:pages] => :environment do |t, args|
     added_count = 0
-    FetchRedditImages.new.fetch_images(20) do |gif|
+    pages = (args[:pages] || 5).to_i
+    puts "fetching #{pages} page(s)"
+    FetchRedditImages.new.fetch_images(pages) do |gif|
       begin
         Image.create! name: gif[:title], original_source: gif[:url]
         added_count += 1
