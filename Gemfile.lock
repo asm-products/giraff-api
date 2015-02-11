@@ -81,6 +81,10 @@ GEM
     kaminari (0.16.2)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    lograge (0.2.2)
+      actionpack (>= 3)
+      activesupport (>= 3)
+      railties (>= 3)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -185,6 +189,7 @@ DEPENDENCIES
   factory_girl_rails
   faraday (~> 0.9.1)
   kaminari
+  lograge
   pg
   puma
   rails (= 4.2.0)
