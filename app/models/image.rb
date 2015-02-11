@@ -4,6 +4,7 @@ class Image < ActiveRecord::Base
 
   validates :original_source, uniqueness: true
 
+  scope :small, ->{ where('bytes < ?', 5.megabytes) }
   scope :unpassed_by, ->(user) {
     joins("left join passes p on p.image_id=images.id and p.user_id=#{User.sanitize(user.id)}").
     where('p.id is null')
