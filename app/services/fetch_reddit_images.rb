@@ -13,10 +13,12 @@ class FetchRedditImages
       after = json['data']['after']
 
       filter_images(json['data']['children']).each do |i|
-        blk.call(
-          url: i['data']['url'],
+        url = i['data']['url']
+        metadata = fetch_metadata(url)
+        blk.call(metadata.merge(
+          url: url,
           title: i['data']['title']
-        )
+        ))
       end
     end
   end
@@ -29,13 +31,12 @@ class FetchRedditImages
     end
   end
 
-  def build_images_hash(images_json)
-    images_json.map { |i|  }
-  end
-
   def get_raw_json(after=nil)
     response = Faraday.get(ENDPOINT, after: after)
     JSON.parse(response.body)
   end
 
+  def fetch_metadata(url)
+    Faraday.head(url).headers.to_h
+  end
 end
