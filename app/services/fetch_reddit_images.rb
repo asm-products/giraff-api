@@ -38,7 +38,20 @@ class FetchRedditImages
   end
 
   def get_raw_json(after=nil)
-    response = Faraday.get(@endpoint, after: after)
+    success = false
+    delay = 10.seconds
+
+    while !success do
+      response = Faraday.get(@endpoint, after: after)
+      success = response.success?
+
+      if !response.success?
+        puts "#{@endpoint} – #{response.status} sleeping #{delay}"
+        sleep delay
+        delay = [delay + 10.seconds, 60.seconds].min
+      end
+    end
+
     JSON.parse(response.body)
   end
 
