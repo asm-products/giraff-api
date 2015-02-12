@@ -45,8 +45,10 @@ class FetchRedditImages
       response = Faraday.get(@endpoint, after: after)
       success = response.success?
 
-      if !response.success?
-        puts "#{@endpoint} – #{response.status} sleeping #{delay}"
+      if response.success?
+        puts "#{@endpoint} #{after} – #{response.status}"
+      else
+        puts "#{@endpoint} #{after} – #{response.status} sleeping #{delay}"
         sleep delay
         delay = [delay + 10.seconds, 60.seconds].min
       end
