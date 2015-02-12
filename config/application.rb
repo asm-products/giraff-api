@@ -25,5 +25,12 @@ module GiraffApi
 
     # don't use rails default exception handlers, because they don't render json
     config.exceptions_app = self.routes
+
+    config.lograge.custom_options = lambda do |event|
+      {
+        user_id: event.payload[:user_id],
+        user_token: event.payload[:user_token],
+      }
+    end
   end
 end

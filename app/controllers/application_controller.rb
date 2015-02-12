@@ -16,4 +16,10 @@ class ApplicationController < ActionController::Base
       sign_in user, store: false
     end
   end
+
+  def append_info_to_payload(payload)
+    super
+    payload[:user_id] = current_user.id if current_user
+    payload[:user_token] = request.headers['X-User-Token'] if request.headers['X-User-Token']
+  end
 end
