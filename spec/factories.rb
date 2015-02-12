@@ -4,6 +4,7 @@ FactoryGirl.define do
     name {|n| "Caption #{n}" }
     original_source {|n| "http://i.imgur.com/#{n}.gif" }
     bytes { 1.megabyte }
+    shortcode {|n| n.to_s }
   end
 
   factory :user do

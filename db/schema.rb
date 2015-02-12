@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211034443) do
+ActiveRecord::Schema.define(version: 20150212003756) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,7 +31,10 @@ ActiveRecord::Schema.define(version: 20150211034443) do
     t.string   "original_source",                 null: false
     t.string   "state",           default: "new"
     t.integer  "bytes",                           null: false
+    t.string   "shortcode",                       null: false
   end
+
+  add_index "images", ["shortcode"], name: "index_images_on_shortcode", unique: true, using: :btree
 
   create_table "passes", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.datetime "created_at", null: false

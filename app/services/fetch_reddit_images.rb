@@ -1,9 +1,13 @@
 class FetchRedditImages
-  ENDPOINT       = 'http://www.reddit.com/r/gifs.json'
-  ACCEPTED_HOSTS = ['i.imgur.com']
-
-  def images
-    @images ||= fetch_images
+  def initialize(category = 'hot')
+    @endpoint = case(category)
+    when 'hot'
+      'http://www.reddit.com/r/gifs.json'
+    when 'top'
+      'http://www.reddit.com/r/gifs/top.json?t=all'
+    else
+      raise 'Unsupported category'
+    end
   end
 
   def fetch_images(pages=1, &blk)
@@ -12,12 +16,12 @@ class FetchRedditImages
       json = get_raw_json(after)
       after = json['data']['after']
 
-      filter_images(json['data']['children']).each do |i|
-        url = i['data']['url']
+      extract_images(json['data']['children']) do |caption, url, shortcode|
         metadata = fetch_metadata(url)
         blk.call(metadata.merge(
           url: url,
-          title: i['data']['title']
+          title: caption,
+          shortcode: shortcode
         ))
       end
     end
@@ -25,14 +29,16 @@ class FetchRedditImages
 
   private
 
-  def filter_images(images_json)
+  def extract_images(images_json, &blk)
     images_json.select do |i|
-      i['data']['url'][/\.gif$/] && ACCEPTED_HOSTS.include?(i['data']['domain'])
+      if i['data']['url'] =~ /http\:\/\/(i\.)?imgur.com\/(\w+)\.gif/
+        blk.call(i['data']['title'], "http://i.imgur.com/#{$2}.gif", $2)
+      end
     end
   end
 
   def get_raw_json(after=nil)
-    response = Faraday.get(ENDPOINT, after: after)
+    response = Faraday.get(@endpoint, after: after)
     JSON.parse(response.body)
   end
 
