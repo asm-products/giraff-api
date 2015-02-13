@@ -1,17 +1,17 @@
-class SessionsController < Devise::SessionsController
+class SessionsController < ApplicationController
+  skip_before_filter :authenticate_user_from_token!
+
   def create
-    self.resource = warden.authenticate!(auth_options)
-    sign_in(resource_name, resource)
-
-    current_user.update_attribute(:authentication_token, nil)
-
-    respond_to do |format|
-      format.json {
-        render :json => {
-          :authentication_token => current_user.authentication_token
-        }, :status => :ok
-      }
+    @user = User.find_or_create_by(email: params[:email]) do |user|
+      user.authentication_token = current_user_token
     end
+    @user.update! authentication_token: current_user_token
+
+    authenticate_user_from_token!
+
+    render json: {
+      authentication_token: @user.authentication_token
+    }
   end
 
   def destroy

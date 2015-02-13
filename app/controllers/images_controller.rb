@@ -2,7 +2,6 @@ class ImagesController < ApplicationController
   respond_to :json
 
   skip_before_filter :authenticate_user_from_token!, only: [:shortcode]
-  skip_before_filter :authenticate_user!, only: [:shortcode]
 
   def index
     respond_with Image.small.unseen_by(current_user).page
@@ -21,5 +20,4 @@ class ImagesController < ApplicationController
       respond_with Hash.new, status: :not_found
     end
   end
-
 end

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     resources :passes, only: [:create]
   end
 
+  resources :sessions, only: [:create, :destroy]
+
   get "/404", :to => "errors#not_found"
   get "/500", :to => "errors#error"
 

@@ -6,15 +6,14 @@ class ApplicationController < ActionController::Base
 
   # skip_before_filter :verify_authenticity_token
   before_filter :authenticate_user_from_token!
-  before_filter :authenticate_user!
+
+  def current_user_token
+    request.headers['X-User-Token'].presence
+  end
 
   def authenticate_user_from_token!
-    user_token = request.headers['X-User-Token'].presence
-    user = user_token && User.find_or_create_by(authentication_token: user_token)
-
-    if user
-      sign_in user, store: false
-    end
+    user = User.find_by!(authentication_token: current_user_token)
+    sign_in user, store: false
   end
 
   def append_info_to_payload(payload)
