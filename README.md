@@ -1,4 +1,4 @@
-# Giraff
+# Fun
 
 ## Getting started
 
