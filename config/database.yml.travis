@@ -1,0 +1,4 @@
+test:
+  adapter: postgresql
+  database: giraff_test
+  username: postgres
