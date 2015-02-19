@@ -14,6 +14,7 @@ class Image < ActiveRecord::Base
     where('f.id is null')
   }
   scope :unseen_by, ->(user) { unpassed_by(user).unfavorited_by(user) }
+  scope :least_seen, -> { order(:vote_counter) }
 
   def self.faved_by(user)
     # Yep, this is a pretty gnarly query. Perhaps we should cache the current
