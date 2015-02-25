@@ -15,6 +15,10 @@ class Image < ActiveRecord::Base
   }
   scope :unseen_by, ->(user) { unpassed_by(user).unfavorited_by(user) }
 
+  scope :least_seen, -> { order('pass_counter, favorite_counter') }
+  scope :super_hot,  -> { where('images.created_at > ?', 7.days.ago).order('favorite_counter desc') }
+  scope :rising,     -> { where('images.created_at > ?', 24.hours.ago).order('favorite_counter desc') }
+
   def self.faved_by(user)
     # Yep, this is a pretty gnarly query. Perhaps we should cache the current
     # fave/pass in another table. eg: judgements

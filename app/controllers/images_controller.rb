@@ -4,7 +4,10 @@ class ImagesController < ApplicationController
   skip_before_filter :authenticate_user_from_token!, only: [:shortcode]
 
   def index
-    respond_with Image.small.unseen_by(current_user).page
+    @all =  Image.small.unseen_by(current_user).super_hot.limit(180)
+    @all << Image.small.unseen_by(current_user).least_seen.limit(90)
+    @all << Image.small.unseen_by(current_user).rising.limit(90)
+    respond_with  Kaminari.paginate_array(@all.uniq.shuffle).page
   end
 
   def favorites
