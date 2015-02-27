@@ -7,7 +7,9 @@ class ImagesController < ApplicationController
     @all =  Image.unseen_by(current_user).super_hot.limit(180)
     @all << Image.unseen_by(current_user).least_seen.limit(90)
     @all << Image.unseen_by(current_user).rising.limit(90)
-    respond_with  Kaminari.paginate_array(@all.uniq.shuffle).page(params[:page])
+    @all = @all.map(&:to_a).flatten.uniq.shuffle
+
+    respond_with  Kaminari.paginate_array(@all).page(params[:page])
   end
 
   def favorites
