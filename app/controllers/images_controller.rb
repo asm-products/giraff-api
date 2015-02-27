@@ -4,10 +4,10 @@ class ImagesController < ApplicationController
   skip_before_filter :authenticate_user_from_token!, only: [:shortcode]
 
   def index
-    @all =  Image.unseen_by(current_user).super_hot.limit(180)
-    @all << Image.unseen_by(current_user).least_seen.limit(90)
-    @all << Image.unseen_by(current_user).rising.limit(90)
-    @all = @all.map(&:to_a).flatten.uniq.shuffle
+    @all =  Image.unseen_by(current_user).super_hot.limit(180).to_a
+    @all << Image.unseen_by(current_user).least_seen.limit(90).to_a
+    @all << Image.unseen_by(current_user).rising.limit(90).to_a
+    @all = @all.flatten.uniq.shuffle
 
     respond_with  Kaminari.paginate_array(@all).page(params[:page])
   end
