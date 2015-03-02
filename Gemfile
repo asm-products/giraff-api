@@ -17,6 +17,8 @@ gem 'responders', '~> 2.0'
 gem 'kaminari'
 gem 'sidekiq'
 
+gem 'rails_12factor', group: :production
+
 group :development, :test do
   gem 'byebug'
   gem 'factory_girl_rails'
