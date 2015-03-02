@@ -2,16 +2,17 @@ class SessionsController < ApplicationController
   skip_before_filter :authenticate_user_from_token!
 
   def create
-    @user = User.find_or_create_by(email: params[:email]) do |user|
-      user.authentication_token = current_user_token
+    @user = User.create_with(password: params[:password], authentication_token: current_user_token).find_or_create_by(email: params[:email])
+    return invalid_login_attempt unless @user.valid?
+
+    if @user.valid_password?(params[:password])
+      @user.update! authentication_token: current_user_token
+      authenticate_user_from_token!
+      
+      render json: { authentication_token: @user.authentication_token }, status: :ok
+      return
     end
-    @user.update! authentication_token: current_user_token
-
-    authenticate_user_from_token!
-
-    render json: {
-      authentication_token: @user.authentication_token
-    }
+    invalid_login_attempt
   end
 
   def destroy
@@ -26,5 +27,10 @@ class SessionsController < ApplicationController
         end
       }
     end
+  end
+ 
+  protected
+  def invalid_login_attempt
+    render json: { message: "Invalid email or password", errors: @user.errors }, status: :unauthorized
   end
 end

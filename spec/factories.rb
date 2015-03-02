@@ -10,6 +10,8 @@ FactoryGirl.define do
   end
 
   factory :user do
-    authentication_token {|n| "token-#{n}" }
+    sequence(:email) {|n| "email_#{n}@foo.bar"}
+    sequence(:authentication_token) {|n| "token-#{n}" }
+    sequence(:password) {|n| "password-#{n}"}
   end
 end
