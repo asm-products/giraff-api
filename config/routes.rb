@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:create, :destroy]
 
+  post "/fbcreate", :to => "sessions#fbcreate"
+
   get "/404", :to => "errors#not_found"
   get "/500", :to => "errors#error"
 

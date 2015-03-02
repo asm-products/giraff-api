@@ -7,5 +7,18 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :trackable
 
   validates :authentication_token, presence: true
-  validates :password, on: :create, presence: true
+  validates :password, on: :create, presence: true, allow_nil: true
+
+  before_create :set_auth_token
+
+  def generate_auth_token
+    SecureRandom.uuid.gsub(/\-/,'')
+  end
+
+  private
+    def set_auth_token
+      return if authentication_token.present?
+      self.authentication_token = generate_auth_token
+    end
+
 end

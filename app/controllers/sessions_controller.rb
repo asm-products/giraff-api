@@ -2,17 +2,28 @@ class SessionsController < ApplicationController
   skip_before_filter :authenticate_user_from_token!
 
   def create
-    @user = User.create_with(password: params[:password], authentication_token: current_user_token).find_or_create_by(email: params[:email])
+    @user = User.create_with(password: params[:password]).find_or_create_by(email: params[:email])
     return invalid_login_attempt unless @user.valid?
 
     if @user.valid_password?(params[:password])
-      @user.update! authentication_token: current_user_token
-      authenticate_user_from_token!
+      @user.update! authentication_token: user.generate_auth_token
+      sign_in @user, store: false
       
       render json: { authentication_token: @user.authentication_token }, status: :ok
       return
     end
     invalid_login_attempt
+  end
+
+  def fbcreate
+    @user = User.create_with(fb_auth_token: params[:fb_auth_token])
+                .find_or_create_by(email: params[:email])
+
+    return invalid_login_attempt if params[:fb_auth_token].blank?
+
+    sign_in @user, store: false
+    
+    render json: { authentication_token: @user.authentication_token }, status: :ok
   end
 
   def destroy

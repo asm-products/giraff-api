@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150302005339) do
+ActiveRecord::Schema.define(version: 20150302231524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,7 +56,10 @@ ActiveRecord::Schema.define(version: 20150302005339) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "encrypted_password",               null: false
+    t.string   "password_hash"
+    t.string   "password_salt"
+    t.string   "encrypted_password"
+    t.text     "fb_auth_token"
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
