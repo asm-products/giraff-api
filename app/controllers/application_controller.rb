@@ -12,7 +12,11 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_user_from_token!
-    user = User.find_by!(authentication_token: current_user_token)
+    user = User.find_by(authentication_token: current_user_token)
+    if user.nil?
+      render json: { message: "Invalid session" }, status: :unauthorized
+      return
+    end
     sign_in user, store: false
   end
 
