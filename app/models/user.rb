@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   validates :authentication_token, presence: true
   validates :password, on: :create, presence: true, allow_nil: true
 
-  before_create :set_auth_token
+  before_validation :set_auth_token
 
   def generate_auth_token
     SecureRandom.uuid.gsub(/\-/,'')
