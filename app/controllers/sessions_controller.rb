@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     return invalid_login_attempt unless @user.valid?
 
     if @user.valid_password?(params[:password])
-      @user.update! authentication_token: user.generate_auth_token
+      @user.update! authentication_token: @user.generate_auth_token
       sign_in @user, store: false
       
       render json: { authentication_token: @user.authentication_token }, status: :ok
