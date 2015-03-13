@@ -9,7 +9,7 @@ class ImagesController < ApplicationController
     @all << Image.medium.unseen_by(current_user).rising.limit(90).to_a
     @all = @all.flatten.uniq.shuffle
 
-    respond_with  Kaminari.paginate_array(@all).page(params[:page])
+    respond_with Kaminari.paginate_array(@all).page(params[:page])
   end
 
   def favorites
@@ -23,6 +23,63 @@ class ImagesController < ApplicationController
       respond_with image, status: :ok
     else
       respond_with Hash.new, status: :not_found
+    end
+  end
+
+  def create
+    # Paperclip handles only multipart/form-data requests. In order to make it easier for front-end or mobile
+    # apps to upload files, we enable simple JSON requests to send the image file as a Base64 encoded string.
+    begin
+      uploaded_file = parse_image_data(image_params[:file])
+
+      assign_params = image_params.dup
+      assign_params.delete(:file)
+
+      image = Image.new(assign_params)
+      image.file = uploaded_file
+
+      if image.save
+        render json: { id: image.id }, status: :created
+        return
+      else
+        render json: { error: image.errors }, status: :unprocessable_entity
+      end
+    rescue Exception => e
+      Rails.logger.error "#{e.message}"
+      render json: { error: e.message }, status: :unprocessable_entity
+    end
+  ensure
+    clean_tempfile
+  end
+
+
+  private
+
+  def image_params
+    params.require(:image).permit(:name, :original_source, :bytes, :shortcode, :file => [:filename, :content, :content_type])
+  end
+
+  def parse_image_data(image_data)
+    if image_data
+      @tempfile = Tempfile.new('image')
+      @tempfile.binmode
+      @tempfile.write Base64.decode64(image_data[:content])
+      @tempfile.rewind
+
+      uploaded_file = ActionDispatch::Http::UploadedFile.new(
+        tempfile: @tempfile,
+        filename: image_data[:filename]
+      )
+
+      uploaded_file.content_type = image_data[:content_type]
+      uploaded_file
+    end
+  end
+
+  def clean_tempfile
+    if @tempfile
+      @tempfile.close
+      @tempfile.unlink
     end
   end
 end

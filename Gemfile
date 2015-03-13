@@ -10,6 +10,7 @@ gem 'devise'
 gem 'faraday', '~> 0.9.1'
 gem 'pg'
 gem 'lograge'
+gem 'paperclip'
 gem 'puma'
 gem 'rails', '4.2.0'
 gem 'rails_stdout_logging', group: [:development, :production]

@@ -24,4 +24,14 @@ RSpec.describe ImagesController, type: :controller do
       end
     end
   end
+
+  describe '#create' do
+    context 'when the data is valid' do
+
+    end
+
+    context 'when the data is invalid' do
+
+    end
+  end
 end
