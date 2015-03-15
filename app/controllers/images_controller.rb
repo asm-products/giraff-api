@@ -26,37 +26,41 @@ class ImagesController < ApplicationController
     end
   end
 
+  # Paperclip handles only multipart/form-data requests. In order to make it easier for front-end or mobile
+  # apps to upload files, we enable simple JSON requests to send the image file as a Base64 encoded string.
   def create
-    # Paperclip handles only multipart/form-data requests. In order to make it easier for front-end or mobile
-    # apps to upload files, we enable simple JSON requests to send the image file as a Base64 encoded string.
-    begin
-      uploaded_file = parse_image_data(image_params[:file])
-
-      assign_params = image_params.dup
-      assign_params.delete(:file)
-
-      image = Image.new(assign_params)
-      image.file = uploaded_file
-
-      if image.save
-        render json: { id: image.id }, status: :created
-        return
-      else
-        render json: { error: image.errors }, status: :unprocessable_entity
-      end
-    rescue Exception => e
-      Rails.logger.error "#{e.message}"
-      render json: { error: e.message }, status: :unprocessable_entity
+    if image_params[:file].nil?
+      @image = Image.new(image_params)
+    else
+      handle_uploaded_file
     end
-  ensure
-    clean_tempfile
-  end
 
+    if @image.save
+      render json: @image, status: :created
+    else
+      render json: { errors: @image.errors }, status: :unprocessable_entity
+    end
+  rescue Exception => e
+    render json: { errors: e.message }, status: :unprocessable_entity
+  end
 
   private
 
   def image_params
     params.require(:image).permit(:name, :original_source, :bytes, :shortcode, :file => [:filename, :content, :content_type])
+  end
+
+  def handle_uploaded_file
+    uploaded_file = parse_image_data(image_params[:file])
+    
+    assign_params = image_params.dup
+    assign_params[:bytes] = uploaded_file.try(:size)
+    assign_params.delete(:file)
+
+    @image = Image.new(assign_params)
+    @image.file = uploaded_file
+  ensure
+    clean_tempfile
   end
 
   def parse_image_data(image_data)
