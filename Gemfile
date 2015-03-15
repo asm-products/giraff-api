@@ -6,6 +6,7 @@ ruby '2.2.0'
 gem 'active_model_serializers',
   github: 'rails-api/active_model_serializers',
   branch: '0-8-stable'
+gem 'aws-sdk-v1'
 gem 'devise'
 gem 'faraday', '~> 0.9.1'
 gem 'pg'
