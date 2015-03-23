@@ -2,6 +2,8 @@ class Image < ActiveRecord::Base
   has_many :favorites
   has_many :passes
 
+  has_attached_file :file
+  validates_attachment :file, content_type: { content_type: 'image/gif' }
   validates :original_source, uniqueness: true
 
   scope :small, ->{ where('bytes < ?', 5.megabytes) }

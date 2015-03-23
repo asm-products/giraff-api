@@ -14,6 +14,6 @@ Rails.application.routes.draw do
   get "/404", :to => "errors#not_found"
   get "/500", :to => "errors#error"
 
-  resources :images, only: [:index]
+  resources :images, only: [:index, :create]
   get "shortcode/:shortcode", to: 'images#shortcode'
 end
