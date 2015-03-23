@@ -55,6 +55,7 @@ class ImagesController < ApplicationController
     
     assign_params = image_params.dup
     assign_params[:bytes] = uploaded_file.try(:size)
+    assign_params[:shortcode] = SecureRandom.hex(4) if assign_params[:shortcode].blank?
     assign_params.delete(:file)
 
     @image = Image.new(assign_params)
