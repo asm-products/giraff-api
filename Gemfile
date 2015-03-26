@@ -1,7 +1,7 @@
 # NOTE: keep the gems in alphabetical order
 
 source 'https://rubygems.org'
-ruby '2.2.0'
+# ruby '2.2.0'
 
 gem 'active_model_serializers',
   github: 'rails-api/active_model_serializers',
