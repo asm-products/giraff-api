@@ -8,21 +8,20 @@ task :tweet_reddit_gif => :environment do
 
 	# Parse and find a new one
 	j["data"]["children"].each do |c|
-		posted = Post.find_by_rid(c["data"]["id"])
-		puts "checking #{c["data"]["title"]}"
-		unless posted
-			puts "Hasnt been posted, posting.."
-			# If its an image post it.
-			if c["data"]["url"].ends_with?(".jpg") || c["data"]["url"].ends_with?(".png") || c["data"]["url"].ends_with?(".gif")
+		if c["data"]["url"].ends_with?(".gif")
+			posted = TwitterPost.find_by_rid(c["data"]["id"])
+			puts "checking #{c["data"]["title"]}: #{c["data"]["url"]}"
+			unless posted
 				tempFile = open(c["data"]["url"])
 				mediaId = TWITTER.upload(tempFile)
 				TWITTER.update(c["data"]["title"], :media_ids => mediaId)
+
+				p = TwitterPost.new
+				p.rid = c["data"]["id"]
+				p.save
+				# break the loop
+				break
 			end
-			p = Post.new
-			p.rid = c["data"]["id"]
-			p.save
-			# break the loop
-			break
 		end
 	end
 end

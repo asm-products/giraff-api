@@ -44,8 +44,10 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    addressable (2.3.7)
     arel (6.0.0)
     bcrypt (3.1.10)
+    buftok (0.2.0)
     builder (3.2.2)
     byebug (3.5.1)
       columnize (~> 0.8)
@@ -64,6 +66,7 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     diff-lcs (1.2.5)
+    equalizer (0.0.11)
     erubis (2.7.0)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
@@ -76,6 +79,12 @@ GEM
       activesupport (>= 4.1.0)
     hike (1.2.3)
     hitimes (1.2.2)
+    http (0.6.4)
+      http_parser.rb (~> 0.6.0)
+    http_parser.rb (0.6.0)
+    httparty (0.13.3)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
     json (1.8.2)
     kaminari (0.16.2)
@@ -89,11 +98,15 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
+    memoizable (0.4.2)
+      thread_safe (~> 0.3, >= 0.3.1)
     mime-types (2.4.3)
     mini_portile (0.6.2)
     minitest (5.5.1)
     multi_json (1.10.1)
+    multi_xml (0.5.5)
     multipart-post (2.0.0)
+    naught (1.0.0)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     orm_adapter (0.5.0)
@@ -161,6 +174,7 @@ GEM
       json
       redis (>= 3.0.6)
       redis-namespace (>= 1.3.1)
+    simple_oauth (0.3.1)
     slop (3.6.0)
     spring (1.2.0)
     sprockets (2.12.3)
@@ -178,6 +192,17 @@ GEM
     timecop (0.6.3)
     timers (4.0.1)
       hitimes
+    twitter (5.14.0)
+      addressable (~> 2.3)
+      buftok (~> 0.2.0)
+      equalizer (~> 0.0.9)
+      faraday (~> 0.9.0)
+      http (~> 0.6.0)
+      http_parser.rb (~> 0.6.0)
+      json (~> 1.8)
+      memoizable (~> 0.4.0)
+      naught (~> 1.0)
+      simple_oauth (~> 0.3.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     warden (1.2.3)
@@ -192,6 +217,7 @@ DEPENDENCIES
   devise
   factory_girl_rails
   faraday (~> 0.9.1)
+  httparty
   kaminari
   lograge
   pg
@@ -204,3 +230,4 @@ DEPENDENCIES
   sidekiq
   spring
   timecop
+  twitter

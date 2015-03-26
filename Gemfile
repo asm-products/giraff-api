@@ -17,6 +17,8 @@ gem 'responders', '~> 2.0'
 gem 'kaminari'
 gem 'sidekiq'
 
+
+
 gem 'rails_12factor', group: :production
 
 group :development, :test do
@@ -26,3 +28,7 @@ group :development, :test do
   gem 'spring'
   gem 'timecop'
 end
+
+# For autotweeting gifs from reddit
+gem 'twitter'
+gem 'httparty'
