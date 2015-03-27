@@ -1,4 +1,7 @@
-FactoryGirl.define do
+FactoryGirl.define do  factory :twitter_post do
+    
+  end
+
 
   factory :image do
     name {|n| "Caption #{n}" }
