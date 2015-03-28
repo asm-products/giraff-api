@@ -4,7 +4,8 @@
 
 Make sure you have postgres up and running.
 
-    rake db:migrate db:seed
+    bundle install
+    rake db:create db:migrate db:seed
     foreman start
 
     curl 0.0.0.0:5000/images
