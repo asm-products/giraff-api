@@ -55,6 +55,14 @@ ActiveRecord::Schema.define(version: 20150327235556) do
 
   add_index "passes", ["image_id", "user_id"], name: "index_passes_on_image_id_and_user_id", unique: true, using: :btree
 
+  create_table "twitter_posts", force: :cascade do |t|
+    t.string   "rid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "twitter_posts", ["rid"], name: "index_twitter_posts_on_rid", using: :btree
+
   create_table "users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "authentication_token",             null: false
     t.string   "email"
@@ -65,8 +73,6 @@ ActiveRecord::Schema.define(version: 20150327235556) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "password_hash"
-    t.string   "password_salt"
     t.string   "encrypted_password"
     t.text     "fb_auth_token"
   end

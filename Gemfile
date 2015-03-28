@@ -1,7 +1,7 @@
 # NOTE: keep the gems in alphabetical order
 
 source 'https://rubygems.org'
-ruby '2.2.0'
+# ruby '2.2.0'
 
 gem 'active_model_serializers',
   github: 'rails-api/active_model_serializers',
@@ -19,6 +19,8 @@ gem 'responders', '~> 2.0'
 gem 'kaminari'
 gem 'sidekiq'
 
+
+
 gem 'rails_12factor', group: :production
 
 group :development, :test do
@@ -28,3 +30,7 @@ group :development, :test do
   gem 'spring'
   gem 'timecop'
 end
+
+# For autotweeting gifs from reddit
+gem 'twitter'
+gem 'httparty'
