@@ -7,7 +7,7 @@ class Image < ActiveRecord::Base
   has_attached_file :mp4
   validates_attachment :mp4, content_type: { content_type: 'video/mp4' }
   validates :original_source, uniqueness: true
-  validates :file_fingerprint, uniqueness: true
+  validates :file_fingerprint, uniqueness: { allow_blank: true }
 
   scope :small, ->{ where('bytes < ?', 5.megabytes) }
   scope :medium, ->{ where('bytes < ?', 10.megabytes) }
