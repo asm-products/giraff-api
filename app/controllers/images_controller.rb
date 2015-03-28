@@ -1,7 +1,7 @@
 class ImagesController < ApplicationController
   respond_to :json
 
-  skip_before_filter :authenticate_user_from_token!, only: [:shortcode]
+  skip_before_filter :authenticate_user_from_token!, only: [:shortcode, :create]
 
   def index
     @all =  Image.medium.unseen_by(current_user).super_hot.limit(180).to_a
@@ -36,6 +36,7 @@ class ImagesController < ApplicationController
     end
 
     if @image.save
+      FetchImageFromUrl.perform_async(image_params[:original_source], @image.id)
       render json: @image, status: :created
     else
       render json: { errors: @image.errors }, status: :unprocessable_entity
@@ -55,7 +56,6 @@ class ImagesController < ApplicationController
     
     assign_params = image_params.dup
     assign_params[:bytes] = uploaded_file.try(:size)
-    assign_params[:shortcode] = SecureRandom.hex(4) if assign_params[:shortcode].blank?
     assign_params.delete(:file)
 
     @image = Image.new(assign_params)

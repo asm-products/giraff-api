@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150317165624) do
+ActiveRecord::Schema.define(version: 20150327235556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,11 @@ ActiveRecord::Schema.define(version: 20150317165624) do
     t.string   "file_content_type"
     t.integer  "file_file_size"
     t.datetime "file_updated_at"
+    t.string   "mp4_file_name"
+    t.string   "mp4_content_type"
+    t.integer  "mp4_file_size"
+    t.datetime "mp4_updated_at"
+    t.string   "file_fingerprint"
   end
 
   add_index "images", ["shortcode"], name: "index_images_on_shortcode", unique: true, using: :btree
@@ -60,6 +65,8 @@ ActiveRecord::Schema.define(version: 20150317165624) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "password_hash"
+    t.string   "password_salt"
     t.string   "encrypted_password"
     t.text     "fb_auth_token"
   end

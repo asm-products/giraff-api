@@ -4,7 +4,10 @@ class Image < ActiveRecord::Base
 
   has_attached_file :file
   validates_attachment :file, content_type: { content_type: 'image/gif' }
+  has_attached_file :mp4
+  validates_attachment :mp4, content_type: { content_type: 'video/mp4' }
   validates :original_source, uniqueness: true
+  validates :file_fingerprint, uniqueness: true
 
   scope :small, ->{ where('bytes < ?', 5.megabytes) }
   scope :medium, ->{ where('bytes < ?', 10.megabytes) }
@@ -22,6 +25,8 @@ class Image < ActiveRecord::Base
   scope :super_hot,  -> { where('images.created_at > ?', 7.days.ago).order('favorite_counter desc') }
   scope :rising,     -> { where('images.created_at > ?', 24.hours.ago).order('favorite_counter desc') }
 
+  before_save :set_shortcode, on: :create
+
   def self.faved_by(user)
     # Yep, this is a pretty gnarly query. Perhaps we should cache the current
     # fave/pass in another table. eg: judgements
@@ -30,4 +35,9 @@ class Image < ActiveRecord::Base
       where(favorites: { user_id: user.id }).
       where('p is null or p.created_at < favorites.created_at')
   end
+
+  def set_shortcode
+    self.shortcode ||= SecureRandom.hex(4)
+  end
+
 end

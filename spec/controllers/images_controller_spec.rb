@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'sidekiq/testing'
+Sidekiq::Testing.fake!
 
 RSpec.describe ImagesController, type: :controller do
   describe '#index' do
@@ -44,6 +46,10 @@ RSpec.describe ImagesController, type: :controller do
           expect(response.body['id']).to_not be_nil
           expect(response.body['errors']).to be_nil
         end
+
+        it 'queues a job to download the image' do
+          expect(FetchImageFromUrl.jobs.size).to eq(1)
+        end
       end
 
       context 'when receiving an image file' do
@@ -54,6 +60,7 @@ RSpec.describe ImagesController, type: :controller do
           expect(response.status).to eql(201)
           expect(response.body['id']).to_not be_nil
           expect(response.body['errors']).to be_nil
+          expect(Image.first.file_content_type).to eq('image/gif')
         end
       end
 
@@ -71,14 +78,15 @@ RSpec.describe ImagesController, type: :controller do
       end
     end
 
-    context 'when there is not a valid auth token header' do
-      it 'does not create an image' do
-        post :create, image: valid_image_data
+    # allowing anonymous uploads for now
+    # context 'when there is not a valid auth token header' do
+    #   it 'does not create an image' do
+    #     post :create, image: valid_image_data
 
-        expect(Image.count).to eq(0)
-        expect(response.status).to eql(401)
-      end
-    end
+    #     expect(Image.count).to eq(0)
+    #     expect(response.status).to eql(401)
+    #   end
+    # end
   end
 
   private
