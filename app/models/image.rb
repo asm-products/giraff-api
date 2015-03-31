@@ -2,13 +2,14 @@ class Image < ActiveRecord::Base
   has_many :favorites
   has_many :passes
 
-  has_attached_file :file
+  has_attached_file :file, path: ":shortcode.:extension"
   validates_attachment :file, content_type: { content_type: 'image/gif' }
-  has_attached_file :mp4
+  has_attached_file :mp4, path: ':shortcode.:extension'
   validates_attachment :mp4, content_type: { content_type: 'video/mp4' }
   validates :original_source, uniqueness: true
   validates :file_fingerprint, uniqueness: { allow_blank: true }
 
+  # TODO look for size based on size of attached gif or mp4
   scope :small, ->{ where('bytes < ?', 5.megabytes) }
   scope :medium, ->{ where('bytes < ?', 10.megabytes) }
   scope :unpassed_by, ->(user) {
@@ -39,5 +40,11 @@ class Image < ActiveRecord::Base
   def set_shortcode
     self.shortcode ||= SecureRandom.hex(4)
   end
+
+  private
+
+    Paperclip.interpolates :shortcode  do |attachment, style|
+      attachment.instance.shortcode
+    end
 
 end

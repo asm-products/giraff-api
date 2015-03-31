@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150327235556) do
+ActiveRecord::Schema.define(version: 20150331232528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 20150327235556) do
     t.string   "name",                              null: false
     t.string   "original_source"
     t.string   "state",             default: "new"
-    t.integer  "bytes",                             null: false
+    t.integer  "bytes"
     t.string   "shortcode",                         null: false
     t.integer  "favorite_counter",  default: 0,     null: false
     t.integer  "pass_counter",      default: 0,     null: false
@@ -73,6 +73,8 @@ ActiveRecord::Schema.define(version: 20150327235556) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "password_hash"
+    t.string   "password_salt"
     t.string   "encrypted_password"
     t.text     "fb_auth_token"
   end

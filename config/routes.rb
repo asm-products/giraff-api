@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {registrations: "registrations", sessions: "sessions"}
 
-  resources :images, only: [:index] do
+  resources :images, only: [:index, :create] do
     get :favorites, on: :collection
     resources :favorites, only: [:create]
     resources :passes, only: [:create]
@@ -14,6 +14,5 @@ Rails.application.routes.draw do
   get "/404", :to => "errors#not_found"
   get "/500", :to => "errors#error"
 
-  resources :images, only: [:index, :create]
   get "shortcode/:shortcode", to: 'images#shortcode'
 end
