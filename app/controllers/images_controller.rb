@@ -30,7 +30,12 @@ class ImagesController < ApplicationController
   # apps to upload files, we enable simple JSON requests to send the image file as a Base64 encoded string.
   def create
     if image_params[:file].nil?
-      @image = Image.new(image_params)
+      if shortcode = image_params.fetch(:shortcode, nil)
+        @image = Image.where(shortcode: shortcode).first_or_create
+        @image.assign_attributes(image_params)
+      else
+        @image = Image.new(image_params)
+      end
     else
       handle_uploaded_file
     end

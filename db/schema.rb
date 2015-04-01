@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150331232528) do
+ActiveRecord::Schema.define(version: 20150401192227) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20150331232528) do
 
   create_table "images", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.datetime "created_at",                        null: false
-    t.string   "name",                              null: false
+    t.string   "name"
     t.string   "original_source"
     t.string   "state",             default: "new"
     t.integer  "bytes"

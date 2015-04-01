@@ -9,7 +9,6 @@ class Image < ActiveRecord::Base
   validates :original_source, uniqueness: true
   validates :file_fingerprint, uniqueness: { allow_blank: true }
 
-  # TODO look for size based on size of attached gif or mp4
   scope :small, ->{ where('bytes < ?', 5.megabytes) }
   scope :medium, ->{ where('bytes < ?', 10.megabytes) }
   scope :unpassed_by, ->(user) {

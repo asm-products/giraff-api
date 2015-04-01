@@ -2,3 +2,5 @@
 log
 public/
 tmp
+*.rdb
+
