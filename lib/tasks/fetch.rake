@@ -9,12 +9,14 @@ namespace :fetch do
       begin
         bytes = gif['content-length'].to_i
         if bytes > 0
-          Image.create!(
-            name: gif[:title],
-            original_source: gif[:url],
-            bytes: bytes,
-            shortcode: gif[:shortcode]
-          )
+          image = Image.create!(
+                    name: gif[:title],
+                    original_source: gif[:url],
+                    bytes: bytes,
+                    shortcode: gif[:shortcode]
+                  )
+          FetchImageFromUrl.perform_async("http://i.imgur.com/#{gif[:shortcode]}.gif", image.id)
+          FetchImageFromUrl.perform_async("http://i.imgur.com/#{gif[:shortcode]}.mp4", image.id)
           puts "add #{gif.slice(:title, :url, :shortcode)}"
           added_count += 1
         end
@@ -26,4 +28,9 @@ namespace :fetch do
     p "#{added_count} Image(s) were added"
   end
 
+  desc "fetch files for existing images in DB"
+  task :from_existing  => :environment do
+    FetchImageFromUrl.perform_async("http://i.imgur.com/#{image.shortcode}.gif", image.id)
+    FetchImageFromUrl.perform_async("http://i.imgur.com/#{image.shortcode}.mp4", image.id)
+  end
 end

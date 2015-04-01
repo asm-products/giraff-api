@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150326172550) do
+ActiveRecord::Schema.define(version: 20150401220402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,14 +26,24 @@ ActiveRecord::Schema.define(version: 20150326172550) do
   add_index "favorites", ["image_id", "user_id"], name: "index_favorites_on_image_id_and_user_id", unique: true, using: :btree
 
   create_table "images", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.datetime "created_at",                       null: false
-    t.string   "name",                             null: false
-    t.string   "original_source",                  null: false
-    t.string   "state",            default: "new"
-    t.integer  "bytes",                            null: false
-    t.string   "shortcode",                        null: false
-    t.integer  "favorite_counter", default: 0,     null: false
-    t.integer  "pass_counter",     default: 0,     null: false
+    t.datetime "created_at",                        null: false
+    t.string   "name"
+    t.string   "original_source"
+    t.string   "state",             default: "new"
+    t.integer  "bytes"
+    t.string   "shortcode",                         null: false
+    t.integer  "favorite_counter",  default: 0,     null: false
+    t.integer  "pass_counter",      default: 0,     null: false
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
+    t.string   "mp4_file_name"
+    t.string   "mp4_content_type"
+    t.integer  "mp4_file_size"
+    t.datetime "mp4_updated_at"
+    t.string   "file_fingerprint"
+    t.integer  "flagged",           default: 0
   end
 
   add_index "images", ["shortcode"], name: "index_images_on_shortcode", unique: true, using: :btree
@@ -64,6 +74,8 @@ ActiveRecord::Schema.define(version: 20150326172550) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "password_hash"
+    t.string   "password_salt"
     t.string   "encrypted_password"
     t.text     "fb_auth_token"
   end
