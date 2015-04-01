@@ -20,7 +20,7 @@ class ImagesController < ApplicationController
     headers['Access-Control-Allow-Origin'] = '*'
     image = Image.where(shortcode: params[:shortcode]).first
     if image
-      respond_with image, status: :ok
+      respond_with image, status: :ok, root: false
     else
       respond_with Hash.new, status: :not_found
     end
