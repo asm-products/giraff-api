@@ -18,6 +18,7 @@ gem 'rails_stdout_logging', group: [:development, :production]
 gem 'responders', '~> 2.0'
 gem 'kaminari'
 gem 'sidekiq'
+gem 'sinatra', :require => nil
 
 
 
