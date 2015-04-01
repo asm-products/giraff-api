@@ -29,8 +29,7 @@ namespace :fetch do
   end
 
   desc "fetch files for existing images in DB"
-  task :fetch_from_existing  => :environment do
-    Image.find_each do |image|
+  task :from_existing  => :environment do
       FetchImageFromUrl.perform_async("http://i.imgur.com/#{image.shortcode}.gif", image.id)
       FetchImageFromUrl.perform_async("http://i.imgur.com/#{image.shortcode}.mp4", image.id)
     end
