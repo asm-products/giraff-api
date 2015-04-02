@@ -9,7 +9,7 @@ class ImageSerializer < ActiveModel::Serializer
     object.file.url
   end
 
-  # def original_source
-  #   self.mp4.url
-  # end
+  def original_source
+    object.mp4.url
+  end
 end

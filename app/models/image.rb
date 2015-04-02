@@ -9,8 +9,8 @@ class Image < ActiveRecord::Base
   validates :original_source, uniqueness: true
   validates :file_fingerprint, uniqueness: { allow_blank: true }
 
-  scope :small, ->{ where('bytes < ?', 5.megabytes) }
-  scope :medium, ->{ where('bytes < ?', 10.megabytes) }
+  scope :small, ->{ where('mp4_file_size < ?', 5.megabytes) }
+  scope :medium, ->{ where('mp4_file_size < ?', 10.megabytes) }
   scope :unpassed_by, ->(user) {
     joins("left join passes p on p.image_id=images.id and p.user_id=#{User.sanitize(user.id)}").
     where('p.id is null')
