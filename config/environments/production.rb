@@ -88,6 +88,7 @@ Rails.application.configure do
       secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
     },
     url: ":s3_alias_url",
-    s3_host_alias: ENV['CLOUDFRONT_URL']
+    s3_host_alias: ENV['CLOUDFRONT_URL'],
+    use_timestamp: false
   }
 end
