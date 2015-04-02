@@ -3,8 +3,8 @@ require 'sidekiq/testing'
 Sidekiq::Testing.fake!
 
 RSpec.describe ImagesController, type: :controller do
-  describe '#index' do
-    
+  context '#index' do
+
     context 'when there is a valid auth token header' do
       it 'fetches an array of images' do
         user = create(:user)
@@ -34,7 +34,7 @@ RSpec.describe ImagesController, type: :controller do
         request.headers['X-User-Token'] = user.authentication_token
       end
 
-      context 'when receiving an external image' do
+      context 'when receiving an image from URL' do
         it 'creates a brand new image' do
           image_data = valid_image_data
           image_data.delete(:file)

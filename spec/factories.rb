@@ -1,4 +1,6 @@
-FactoryGirl.define do  factory :twitter_post do
+FactoryGirl.define do
+
+  factory :twitter_post do
     
   end
 

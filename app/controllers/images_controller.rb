@@ -58,7 +58,7 @@ class ImagesController < ApplicationController
 
   def handle_uploaded_file
     uploaded_file = parse_image_data(image_params[:file])
-    
+
     assign_params = image_params.dup
     assign_params[:bytes] = uploaded_file.try(:size)
     assign_params.delete(:file)
