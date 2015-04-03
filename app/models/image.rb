@@ -2,10 +2,13 @@ class Image < ActiveRecord::Base
   has_many :favorites
   has_many :passes
 
-  has_attached_file :file, path: ":shortcode.:extension"
+  has_attached_file :file, path: ":shortcode.:extension", styles: {
+    thumb: ["300x300", :png]
+  }
   validates_attachment :file, content_type: { content_type: 'image/gif' }
   has_attached_file :mp4, path: ':shortcode.:extension'
   validates_attachment :mp4, content_type: { content_type: 'video/mp4' }
+
   validates :original_source, uniqueness: true
   validates :file_fingerprint, uniqueness: { allow_blank: true }
 
