@@ -29,6 +29,9 @@ class ImagesController < ApplicationController
   # Paperclip handles only multipart/form-data requests. In order to make it easier for front-end or mobile
   # apps to upload files, we enable simple JSON requests to send the image file as a Base64 encoded string.
   def create
+    # allow cors
+    headers['Access-Control-Allow-Origin'] = '*'
+
     if image_params[:file].nil?
       if shortcode = image_params.fetch(:shortcode, nil)
         @image = Image.where(shortcode: shortcode).first_or_create
