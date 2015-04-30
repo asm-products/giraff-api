@@ -1,9 +1,12 @@
 FactoryGirl.define do
-
-  factory :twitter_post do
-    
+  factory :device do
+    uid  {|n| "device_#{n}"}
+    type "iphone"
+    user
   end
 
+  factory :twitter_post do    
+  end
 
   factory :image do
     name {|n| "Caption #{n}" }
