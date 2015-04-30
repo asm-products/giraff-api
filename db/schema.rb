@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150401220402) do
+ActiveRecord::Schema.define(version: 20150430002605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,19 +65,18 @@ ActiveRecord::Schema.define(version: 20150401220402) do
   add_index "twitter_posts", ["rid"], name: "index_twitter_posts_on_rid", using: :btree
 
   create_table "users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
-    t.string   "authentication_token",             null: false
+    t.string   "authentication_token",                 null: false
     t.string   "email"
-    t.integer  "sign_in_count",        default: 0, null: false
+    t.integer  "sign_in_count",        default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "password_hash"
-    t.string   "password_salt"
     t.string   "encrypted_password"
     t.text     "fb_auth_token"
+    t.boolean  "anonymous",            default: false
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", using: :btree
