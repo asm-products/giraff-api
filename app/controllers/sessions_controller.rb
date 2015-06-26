@@ -2,7 +2,18 @@ class SessionsController < ApplicationController
   skip_before_filter :authenticate_user_from_token!
 
   def create
-    @user = User.create_with(password: params[:password]).find_or_create_by(email: params[:email])
+    return invalid_login_attempt if params[:email].blank? || params[:password].blank?
+
+    unless @user = User.find_by(email: params[:email])
+      device = Device.find_by(uid: params[:device_id])
+
+      if device
+        @user = device.user
+        @user.update(email: params[:email], password: params[:password], anonymous: false)
+      else
+        @user = User.create(email: params[:email], password: params[:password])
+      end
+    end
     return invalid_login_attempt unless @user.valid?
 
     if @user.valid_password?(params[:password])
@@ -61,7 +72,7 @@ class SessionsController < ApplicationController
  
   protected
   def invalid_login_attempt
-    render json: { message: "Invalid email or password", errors: @user.errors }, status: :unauthorized
+    render json: { message: "Invalid email or password", errors: @user.try(:errors) }, status: :unauthorized
   end
 
   def invalid_device_data device
