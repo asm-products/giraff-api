@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :device do
-    uid  {|n| "device_#{n}"}
+    sequence(:uid) {|n| "device_#{n}"}
     kind "iphone"
     user
   end
@@ -20,5 +20,11 @@ FactoryGirl.define do
   factory :user do
     sequence(:email) {|n| "email_#{n}@foo.bar"}
     sequence(:password) {|n| "password-#{n}"}
+
+    factory :anonymous_user do
+      anonymous true
+      email nil
+      password nil
+    end
   end
 end

@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :sessions, only: [:create, :destroy]
 
   post "/fbcreate", :to => "sessions#fbcreate"
+  post "/create_anonymous", :to => "sessions#create_anonymous"
 
   get "/404", :to => "errors#not_found"
   get "/500", :to => "errors#error"
