@@ -17,10 +17,10 @@ ActiveRecord::Schema.define(version: 20150430003542) do
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
-  create_table "devices", force: :cascade do |t|
+  create_table "devices", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "uid",        null: false
     t.string   "kind"
-    t.integer  "user_id"
+    t.uuid     "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

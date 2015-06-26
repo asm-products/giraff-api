@@ -1,9 +1,9 @@
 class CreateDevices < ActiveRecord::Migration
   def change
-    create_table :devices do |t|
+    create_table :devices, id: :uuid do |t|
       t.string :uid, null: false
       t.string :kind
-      t.references :user
+      t.uuid :user_id
 
       t.timestamps null: false
     end
