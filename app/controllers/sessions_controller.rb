@@ -18,8 +18,7 @@ class SessionsController < ApplicationController
   end
 
   def fbcreate
-    @user = User.create_with(fb_auth_token: params[:fb_auth_token])
-                .find_or_create_by(email: params[:email])
+    @user = User.create_with(fb_auth_token: params[:fb_auth_token]).find_or_create_by(email: params[:email])
 
     return invalid_login_attempt if params[:fb_auth_token].blank?
 

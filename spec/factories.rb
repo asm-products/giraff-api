@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :device do
     uid  {|n| "device_#{n}"}
-    type "iphone"
+    kind "iphone"
     user
   end
 
