@@ -182,6 +182,8 @@ GEM
       rspec-mocks (~> 3.2.0)
       rspec-support (~> 3.2.0)
     rspec-support (3.2.1)
+    shoulda-matchers (2.8.0)
+      activesupport (>= 3.0.0)
     sidekiq (3.3.1)
       celluloid (>= 0.16.0)
       connection_pool (>= 2.1.1)
@@ -247,6 +249,7 @@ DEPENDENCIES
   rails_stdout_logging
   responders (~> 2.0)
   rspec-rails (~> 3.2)
+  shoulda-matchers
   sidekiq
   sinatra
   spring

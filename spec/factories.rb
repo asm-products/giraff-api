@@ -1,9 +1,12 @@
 FactoryGirl.define do
-
-  factory :twitter_post do
-    
+  factory :device do
+    sequence(:uid) {|n| "device_#{n}"}
+    kind "iphone"
+    user
   end
 
+  factory :twitter_post do    
+  end
 
   factory :image do
     name {|n| "Caption #{n}" }
@@ -17,5 +20,11 @@ FactoryGirl.define do
   factory :user do
     sequence(:email) {|n| "email_#{n}@foo.bar"}
     sequence(:password) {|n| "password-#{n}"}
+
+    factory :anonymous_user do
+      anonymous true
+      email nil
+      password nil
+    end
   end
 end

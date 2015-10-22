@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  it { should have_many :devices }
+
   let(:user)     { create(:user) }
   let(:favorite) { Favorite.create!(user: user, image: create(:image)) }
   let(:pass)     { Pass.create!(user: user, image: create(:image)) }

@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :favorite_images, source: :image, through: :favorites
   has_many :passes
   has_many :passed_images, source: :image, through: :passes
+  has_many :devices
 
   devise :database_authenticatable, :registerable, :trackable
 
@@ -16,9 +17,8 @@ class User < ActiveRecord::Base
   end
 
   private
-    def set_auth_token
-      return if authentication_token.present?
-      self.authentication_token = generate_auth_token
-    end
-
+  def set_auth_token
+    return if authentication_token.present?
+    self.authentication_token = generate_auth_token
+  end
 end
